@@ -1,9 +1,9 @@
-package com.springboot.videoservice.services.impl;
+package com.springboot.videoservice.service.impl;
 
-import com.springboot.videoservice.exceptions.ResourceNotFoundException;
-import com.springboot.videoservice.models.Channel;
-import com.springboot.videoservice.repositories.ChannelRepository;
-import com.springboot.videoservice.services.ChannelService;
+import com.springboot.videoservice.exception.ResourceNotFoundException;
+import com.springboot.videoservice.model.Channel;
+import com.springboot.videoservice.repository.ChannelRepository;
+import com.springboot.videoservice.service.ChannelService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,16 +35,14 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel updateChannel(Channel channel, Long id) {
-        Channel existingChannel = channelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Channel", "Id", id));
+        Channel existingChannel = getChannelById(id);
         existingChannel.setName(channel.getName());
         return existingChannel;
     }
 
     @Override
     public void deleteChannel(Long id) {
-        channelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Channel", "Id", id));
+        getChannelById(id);
         channelRepository.deleteById(id);
     }
 }

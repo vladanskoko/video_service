@@ -1,6 +1,6 @@
-package com.springboot.videoservice.services;
+package com.springboot.videoservice.service;
 
-import com.springboot.videoservice.models.User;
+import com.springboot.videoservice.model.User;
 
 import java.util.List;
 

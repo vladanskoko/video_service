@@ -1,9 +1,9 @@
-package com.springboot.videoservice.services.impl;
+package com.springboot.videoservice.service.impl;
 
-import com.springboot.videoservice.exceptions.ResourceNotFoundException;
-import com.springboot.videoservice.models.User;
-import com.springboot.videoservice.repositories.UserRepository;
-import com.springboot.videoservice.services.UserService;
+import com.springboot.videoservice.exception.ResourceNotFoundException;
+import com.springboot.videoservice.model.User;
+import com.springboot.videoservice.repository.UserRepository;
+import com.springboot.videoservice.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,17 +35,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user, Long id) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
+        User existingUser = getUserById(id);
         existingUser.setName(user.getName());
-        existingUser.setChannel(user.getChannel());
         return userRepository.save(existingUser);
     }
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
+        getUserById(id);
         userRepository.deleteById(id);
     }
 }

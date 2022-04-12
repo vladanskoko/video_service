@@ -1,6 +1,6 @@
-package com.springboot.videoservice.services;
+package com.springboot.videoservice.service;
 
-import com.springboot.videoservice.models.Channel;
+import com.springboot.videoservice.model.Channel;
 
 import java.util.List;
 

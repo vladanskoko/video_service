@@ -1,6 +1,6 @@
-package com.springboot.videoservice.repositories;
+package com.springboot.videoservice.repository;
 
-import com.springboot.videoservice.models.Playlist;
+import com.springboot.videoservice.model.Playlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
