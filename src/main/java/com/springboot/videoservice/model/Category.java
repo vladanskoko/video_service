@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,10 +21,10 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Playlist> playlists;
+    private Set<Playlist> playlists = new HashSet<>();
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Video> videos;
+    private Set<Video> videos = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

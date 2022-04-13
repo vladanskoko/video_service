@@ -18,11 +18,6 @@ public class User {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Channel channel;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

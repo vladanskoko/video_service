@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
-    private ChannelRepository channelRepository;
+    private final ChannelRepository channelRepository;
 
     public ChannelServiceImpl(ChannelRepository channelRepository) {
         this.channelRepository = channelRepository;
@@ -37,7 +37,7 @@ public class ChannelServiceImpl implements ChannelService {
     public Channel updateChannel(Channel channel, Long id) {
         Channel existingChannel = getChannelById(id);
         existingChannel.setName(channel.getName());
-        return existingChannel;
+        return channelRepository.save(existingChannel);
     }
 
     @Override

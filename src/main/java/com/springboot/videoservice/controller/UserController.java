@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
@@ -33,9 +33,7 @@ public class UserController {
 
     @PutMapping("{id}")
     public User updateUser(@RequestBody User user, @PathVariable("id") Long userId) {
-        User existingUser = getUserById(userId);
-        existingUser.setName(user.getName());
-        return userService.saveUser(existingUser);
+        return this.userService.updateUser(user, userId);
     }
 
     @DeleteMapping("{id}")

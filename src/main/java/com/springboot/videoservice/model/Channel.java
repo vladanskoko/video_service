@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,8 +21,8 @@ public class Channel {
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "channel")
-    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private User user;
 
     @ManyToMany
@@ -30,7 +31,7 @@ public class Channel {
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "playlist_id")
     )
-    private Set<Playlist> playlists;
+    private Set<Playlist> playlists = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
