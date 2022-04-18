@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,19 +18,18 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "playlists")
     private Set<Channel> channels;
 
-    @ManyToMany
-    @JoinTable(
-            name = "playlist_video",
-            joinColumns = @JoinColumn(name = "playlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "video_id")
+    @OneToMany(
+            mappedBy = "playlist",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private Set<Video> videos = new HashSet<>();
+    private List<PlaylistVideo> playlistVideos;
 
     @ManyToMany
     @JoinTable(
@@ -50,5 +50,13 @@ public class Playlist {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

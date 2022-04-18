@@ -1,10 +1,10 @@
 package com.springboot.videoservice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,8 +23,11 @@ public class Video {
     @Column
     private Long orderNumber;
 
-    @ManyToMany(mappedBy = "videos")
-    private Set<Playlist> playlists = new HashSet<>();
+    @OneToMany(
+            mappedBy = "video",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<PlaylistVideo> playlistVideos;
 
     @ManyToMany
     @JoinTable(
@@ -39,7 +42,7 @@ public class Video {
         if (this == o) return true;
         if (!(o instanceof Video)) return false;
         Video video = (Video) o;
-        return getId().equals(video.getId());
+        return Objects.equals(getId(), video.getId());
     }
 
     @Override

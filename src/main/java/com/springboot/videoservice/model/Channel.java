@@ -1,6 +1,5 @@
 package com.springboot.videoservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +17,12 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany

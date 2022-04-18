@@ -1,6 +1,9 @@
 package com.springboot.videoservice.controller;
 
 import com.springboot.videoservice.model.Playlist;
+import com.springboot.videoservice.model.PlaylistVideo;
+import com.springboot.videoservice.model.Video;
+import com.springboot.videoservice.service.PlaylistVideoService;
 import com.springboot.videoservice.service.impl.PlaylistServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +13,11 @@ import java.util.List;
 @RequestMapping("/api/playlist")
 public class PlaylistController {
     private final PlaylistServiceImpl playlistService;
+    private final PlaylistVideoService playlistVideoService;
 
-    public PlaylistController(PlaylistServiceImpl playlistService) {
+    public PlaylistController(PlaylistServiceImpl playlistService, PlaylistVideoService playlistVideoService) {
         this.playlistService = playlistService;
+        this.playlistVideoService = playlistVideoService;
     }
 
     @PostMapping
