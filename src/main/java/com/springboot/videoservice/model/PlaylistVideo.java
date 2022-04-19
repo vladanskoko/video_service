@@ -2,7 +2,6 @@ package com.springboot.videoservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,7 +33,7 @@ public class PlaylistVideo {
         this.playlist = playlist;
         this.video = video;
         this.orderNumber = orderNumber;
-        this.playlistVideoId = new PlaylistVideoId();
+        this.playlistVideoId = new PlaylistVideoId(playlist, video);
     }
 
     @Override
@@ -68,6 +67,12 @@ public class PlaylistVideo {
         public PlaylistVideoId() {
 
         }
+
+        public PlaylistVideoId(Playlist playlist, Video video) {
+            playlistId = playlist.getId();
+            videoId = video.getId();
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

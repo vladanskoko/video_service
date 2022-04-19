@@ -23,6 +23,10 @@ public class Video {
     @Column
     private Long orderNumber;
 
+    public Video(String name) {
+        this.name = name;
+    }
+
     @OneToMany(
             mappedBy = "video",
             cascade = CascadeType.ALL,

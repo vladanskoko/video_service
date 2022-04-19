@@ -1,5 +1,6 @@
 package com.springboot.videoservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +19,13 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column
     private String name;
+
+    public Playlist(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @ManyToMany(mappedBy = "playlists")
     private Set<Channel> channels;
