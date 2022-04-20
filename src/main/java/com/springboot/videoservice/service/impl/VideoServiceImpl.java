@@ -37,7 +37,6 @@ public class VideoServiceImpl implements VideoService {
     public Video updateVideo(Video video, Long id) {
         Video existingVideo = getVideoById(id);
         existingVideo.setName(video.getName());
-        existingVideo.setOrderNumber(video.getOrderNumber());
         return videoRepository.save(existingVideo);
     }
 

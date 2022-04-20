@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PlaylistVideoService {
     List<PlaylistVideo> sortPlaylistVideos(Playlist playlist);
-    PlaylistVideo addVideoToPlaylist(Long playlistId, Video video);
+    PlaylistVideo addVideoToPlaylist(Long playlistId, Long videoId);
     List<PlaylistVideo> removeVideoFromPlaylist(Long playlistId, Video video);
     List<PlaylistVideo> changeOrderOfVideosInPlaylist(Long playlistId, Long videoId, Long orderNum);
 }
