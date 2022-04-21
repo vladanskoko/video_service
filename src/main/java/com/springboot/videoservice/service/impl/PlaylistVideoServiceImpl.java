@@ -38,8 +38,24 @@ public class PlaylistVideoServiceImpl implements PlaylistVideoService {
     }
 
     @Override
-    public List<PlaylistVideo> removeVideoFromPlaylist(Long playlistId, Video video) {
-        return null;
+    public void removeVideoFromPlaylist(Long playlistId, Long videoId) {
+        Playlist playlist = playlistService.getPlaylistById(playlistId);
+        List<PlaylistVideo> playlistVideos = playlistVideoRepository.getPlaylistVideosByPlaylist(playlist);
+        Integer index = 0;
+
+        for(PlaylistVideo pv: playlistVideos) {
+            if(pv.getVideo().getId().equals(videoId)) {
+                index = pv.getOrderNumber();
+                playlistVideoRepository.delete(pv);
+                break;
+            }
+        }
+        for(PlaylistVideo pv: playlistVideos) {
+            if(pv.getOrderNumber() > index) {
+                pv.setOrderNumber(pv.getOrderNumber() - 1);
+                playlistVideoRepository.save(pv);
+            }
+        }
     }
 
     @Override

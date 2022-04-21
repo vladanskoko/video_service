@@ -1,5 +1,6 @@
 package com.springboot.videoservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,7 @@ public class Playlist {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private List<PlaylistVideo> playlistVideos;
 
     @ManyToMany

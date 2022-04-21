@@ -1,5 +1,6 @@
 package com.springboot.videoservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Video {
             mappedBy = "video",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonIgnore
     private List<PlaylistVideo> playlistVideos;
 
     @ManyToMany
