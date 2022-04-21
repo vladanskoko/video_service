@@ -1,5 +1,6 @@
 package com.springboot.videoservice.service.impl;
 
+import com.springboot.videoservice.exception.ResourceNotFoundException;
 import com.springboot.videoservice.model.Playlist;
 import com.springboot.videoservice.model.PlaylistVideo;
 import com.springboot.videoservice.model.Video;
@@ -10,6 +11,7 @@ import com.springboot.videoservice.service.VideoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaylistVideoServiceImpl implements PlaylistVideoService {
@@ -40,16 +42,12 @@ public class PlaylistVideoServiceImpl implements PlaylistVideoService {
     @Override
     public void removeVideoFromPlaylist(Long playlistId, Long videoId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
+        Video video = videoService.getVideoById(videoId);
         List<PlaylistVideo> playlistVideos = playlistVideoRepository.getPlaylistVideosByPlaylist(playlist);
-        Integer index = 0;
+        PlaylistVideo playlistVideo = playlistVideoRepository.getPlaylistVideoByPlaylistAndVideo(playlist, video);
+        Integer index = playlistVideo.getOrderNumber();
+        playlistVideoRepository.delete(playlistVideo);
 
-        for(PlaylistVideo pv: playlistVideos) {
-            if(pv.getVideo().getId().equals(videoId)) {
-                index = pv.getOrderNumber();
-                playlistVideoRepository.delete(pv);
-                break;
-            }
-        }
         for(PlaylistVideo pv: playlistVideos) {
             if(pv.getOrderNumber() > index) {
                 pv.setOrderNumber(pv.getOrderNumber() - 1);
