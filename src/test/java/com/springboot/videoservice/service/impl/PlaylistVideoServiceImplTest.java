@@ -41,8 +41,10 @@ class PlaylistVideoServiceImplTest {
     private Video video1;
     private Video video2;
     private Video video3;
-
     private Playlist playlist;
+    private List<PlaylistVideo> testPVList;
+    private final Long invalidPlaylistId = 111L;
+    private final Long invalidVideoId = 222L;
 
     @BeforeEach
     void setUp() {
@@ -60,18 +62,20 @@ class PlaylistVideoServiceImplTest {
         playlist = new Playlist();
         playlist.setId(1L);
         playlist.setName("playlist1");
+        testPVList = new ArrayList<>();
+
+        lenient().when(playlistServiceMock.getPlaylistById(eq(1L))).thenReturn(playlist);
+        lenient().when(videoServiceMock.getVideoById(eq(1L))).thenReturn(video1);
+        lenient().when(playlistVideoRepositoryMock.getPlaylistVideosByPlaylist(eq(playlist))).thenReturn(testPVList);
+        lenient().when(playlistServiceMock.getPlaylistById(eq(invalidPlaylistId))).thenThrow(ResourceNotFoundException.class);
+        lenient().when(videoServiceMock.getVideoById(eq(invalidVideoId))).thenThrow(ResourceNotFoundException.class);
     }
 
     @Test
     void givenEmptyPlaylistAndVideo_whenAddVideoToPlaylist_thenReturnPlaylistVideoListWithAddedVideoAtBeggining() {
         //given
-        List<PlaylistVideo> testPVList = new ArrayList<>();
         PlaylistVideo playlistVideo = new PlaylistVideo(playlist, video1, 1);
-        PlaylistVideo playlistVideoFromDB = new PlaylistVideo();
 
-        when(playlistServiceMock.getPlaylistById(eq(1L))).thenReturn(playlist);
-        when(videoServiceMock.getVideoById(eq(1L))).thenReturn(video1);
-        when(playlistVideoRepositoryMock.getPlaylistVideosByPlaylist(eq(playlist))).thenReturn(testPVList);
         when(playlistVideoRepositoryMock.save(eq(playlistVideo))).thenReturn(playlistVideo);
 
         //when
@@ -85,12 +89,9 @@ class PlaylistVideoServiceImplTest {
     @Test
     void givenPlaylistAndVideo_whenAddVideoToPlaylist_thenReturnPlaylistVideoListWithAddedVideoToTheEnd() {
         //given
-        List<PlaylistVideo> testPVList = new ArrayList<>(List.of(new PlaylistVideo()));
+        testPVList.add(new PlaylistVideo());
         PlaylistVideo playlistVideo = new PlaylistVideo(playlist, video1, 2);
 
-        when(playlistServiceMock.getPlaylistById(eq(1L))).thenReturn(playlist);
-        when(videoServiceMock.getVideoById(eq(1L))).thenReturn(video1);
-        when(playlistVideoRepositoryMock.getPlaylistVideosByPlaylist(eq(playlist))).thenReturn(testPVList);
         when(playlistVideoRepositoryMock.save(eq(playlistVideo))).thenReturn(playlistVideo);
 
         //when
@@ -103,11 +104,8 @@ class PlaylistVideoServiceImplTest {
 
     @Test
     void givenUnexistentPlaylistAndVideo_whenAddVideoToUnexistentPlaylist_thenThrowException() {
-        //given
-        when(playlistServiceMock.getPlaylistById(eq(222L))).thenThrow(ResourceNotFoundException.class);
-
         //when
-        Executable executable = () -> playlistVideoService.addVideoToPlaylist(222L, 1L);
+        Executable executable = () -> playlistVideoService.addVideoToPlaylist(invalidPlaylistId, 1L);
 
         //then
         verifyAll(0, 0, 0, 0, 0);
@@ -116,11 +114,8 @@ class PlaylistVideoServiceImplTest {
 
     @Test
     void givenUnexistentVideoAndPlaylist_whenAddUnexistenVideoToPlaylist_thenThrowException() {
-        //given
-        when(videoServiceMock.getVideoById(eq(222L))).thenThrow(ResourceNotFoundException.class);
-
         //when
-        Executable executable = () -> playlistVideoService.addVideoToPlaylist(1L, 222L);
+        Executable executable = () -> playlistVideoService.addVideoToPlaylist(1L, invalidVideoId);
 
         //then
         verifyAll(0, 0, 0, 0, 0);
@@ -130,13 +125,9 @@ class PlaylistVideoServiceImplTest {
     @Test
     void givenPlaylistAndVideo_whenDeleteVideoFromPlaylist_thenVideoIsRemovedFromPlaylist() {
         //given
-        List<PlaylistVideo> testPVList = new ArrayList<>();
         PlaylistVideo testPV = new PlaylistVideo(playlist, video1, 1);
         testPVList.add(testPV);
 
-        when(playlistServiceMock.getPlaylistById(eq(1L))).thenReturn(playlist);
-        when(videoServiceMock.getVideoById(eq(1L))).thenReturn(video1);
-        when(playlistVideoRepositoryMock.getPlaylistVideosByPlaylist(eq(playlist))).thenReturn(testPVList);
         when(playlistVideoRepositoryMock.getPlaylistVideoByPlaylistAndVideo(eq(playlist), eq(video1))).thenReturn(testPV);
 
         doAnswer(invocation -> {
@@ -154,11 +145,8 @@ class PlaylistVideoServiceImplTest {
 
     @Test
     void givenUnexistentPlaylistAndVideo_whenDeleteVideoFromUnexistentPlaylist_thenThrowException() {
-        //given
-        when(playlistServiceMock.getPlaylistById(eq(222L))).thenThrow(ResourceNotFoundException.class);
-
         //when
-        Executable executable = () -> playlistVideoService.removeVideoFromPlaylist(222L,1L);
+        Executable executable = () -> playlistVideoService.removeVideoFromPlaylist(invalidPlaylistId,1L);
 
         //then
         verifyAll(0, 0, 0, 0, 0);
@@ -167,11 +155,8 @@ class PlaylistVideoServiceImplTest {
 
     @Test
     void givenUnexistentVideoAndPlaylist_whenDeleteUnexistentVideoFromPlaylist_thenThrowException() {
-        //given
-        when(videoServiceMock.getVideoById(eq(222L))).thenThrow(ResourceNotFoundException.class);
-
         //when
-        Executable executable = () -> playlistVideoService.removeVideoFromPlaylist(1L, 222L);
+        Executable executable = () -> playlistVideoService.removeVideoFromPlaylist(1L, invalidVideoId);
 
         //then
         verifyAll(0, 0, 0, 0, 0);
@@ -184,10 +169,9 @@ class PlaylistVideoServiceImplTest {
         PlaylistVideo playlistVideo1 = new PlaylistVideo(playlist, video1, 3);
         PlaylistVideo playlistVideo2 = new PlaylistVideo(playlist, video2, 1);
         PlaylistVideo playlistVideo3 = new PlaylistVideo(playlist, video3, 2);
-        List<PlaylistVideo> testPVList = new ArrayList<>(List.of(playlistVideo1, playlistVideo2, playlistVideo3));
+        testPVList = new ArrayList<>(List.of(playlistVideo1, playlistVideo2, playlistVideo3));
         List<PlaylistVideo> actualPVList;
 
-        when(playlistServiceMock.getPlaylistById(eq(1L))).thenReturn(playlist);
         when(playlistVideoRepositoryMock.getPlaylistVideosByPlaylist(eq(playlist))).thenReturn(testPVList);
 
         //when
@@ -202,11 +186,8 @@ class PlaylistVideoServiceImplTest {
 
     @Test
     void givenUnexistentPlaylist_whenSortVideosInUnexistentPlaylist_thenThrowException() {
-        //given
-        when(playlistServiceMock.getPlaylistById(eq(222L))).thenThrow(ResourceNotFoundException.class);
-
         //when
-        Executable executable = () -> playlistVideoService.sortPlaylistVideos(222L);
+        Executable executable = () -> playlistVideoService.sortPlaylistVideos(invalidPlaylistId);
 
         //then
         assertThrows(ResourceNotFoundException.class, executable);
