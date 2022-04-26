@@ -1,6 +1,5 @@
 package com.springboot.videoservice.service.impl;
 
-import com.springboot.videoservice.exception.ResourceNotFoundException;
 import com.springboot.videoservice.model.Playlist;
 import com.springboot.videoservice.model.PlaylistVideo;
 import com.springboot.videoservice.model.Video;
@@ -10,8 +9,8 @@ import com.springboot.videoservice.service.PlaylistVideoService;
 import com.springboot.videoservice.service.VideoService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlaylistVideoServiceImpl implements PlaylistVideoService {
@@ -26,8 +25,11 @@ public class PlaylistVideoServiceImpl implements PlaylistVideoService {
     }
 
     @Override
-    public List<PlaylistVideo> sortPlaylistVideos(Playlist playlist) {
-        return null;
+    public List<PlaylistVideo> sortPlaylistVideos(Long playlistId) {
+        Playlist playlist = playlistService.getPlaylistById(playlistId);
+        List<PlaylistVideo> playlistVideos = playlistVideoRepository.getPlaylistVideosByPlaylist(playlist);
+        playlistVideos.sort(Comparator.comparingInt(PlaylistVideo::getOrderNumber));
+        return playlistVideos;
     }
 
     @Override
