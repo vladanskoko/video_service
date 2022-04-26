@@ -179,9 +179,11 @@ class PlaylistVideoServiceImplTest {
 
         //then
         verifyAll(1, 0, 1, 0, 0);
-        assertEquals("video2", actualPVList.get(0).getVideo().getName());
-        assertEquals("video3", actualPVList.get(1).getVideo().getName());
-        assertEquals("video1", actualPVList.get(2).getVideo().getName());
+        assertAll(
+                () -> assertEquals("video2", actualPVList.get(0).getVideo().getName()),
+                () -> assertEquals("video3", actualPVList.get(1).getVideo().getName()),
+                () -> assertEquals("video1", actualPVList.get(2).getVideo().getName())
+        );
     }
 
     @Test
