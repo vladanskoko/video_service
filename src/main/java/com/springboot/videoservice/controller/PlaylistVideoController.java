@@ -31,4 +31,11 @@ public class PlaylistVideoController {
     public List<PlaylistVideo> sortPlaylistVideos(@PathVariable("playlistId") Long playlistId) {
         return playlistVideoService.sortPlaylistVideos(playlistId);
     }
+
+    @PutMapping("{playlistId}/{videoId}/{orderNum}")
+    public List<PlaylistVideo> changeOrderOfVideosInPlaylist(@PathVariable("playlistId") Long playlistId,
+                                                             @PathVariable("videoId") Long videoId,
+                                                             @PathVariable("orderNum") Integer newOrderNum) {
+        return playlistVideoService.changeOrderOfVideosInPlaylist(playlistId, videoId, newOrderNum);
+    }
 }
