@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/playlistvideo")
+@RequestMapping("/api/playlist")
 public class PlaylistVideoController {
     private final PlaylistVideoService playlistVideoService;
 
@@ -15,24 +15,24 @@ public class PlaylistVideoController {
         this.playlistVideoService = playlistVideoService;
     }
 
-    @PostMapping("{playlistId}/{videoId}")
+    @PostMapping("{playlistId}/video/{videoId}")
     public PlaylistVideo saveVideoToPlaylist(@PathVariable("playlistId") Long playlistId,
                                              @PathVariable("videoId") Long videoId ) {
         return playlistVideoService.addVideoToPlaylist(playlistId, videoId);
     }
 
-    @DeleteMapping("{playlistId}/{videoId}")
+    @DeleteMapping("{playlistId}/video/{videoId}")
     public void removeVideoFromPlaylist(@PathVariable("playlistId") Long playlistId,
                                         @PathVariable("videoId") Long videoId) {
         playlistVideoService.removeVideoFromPlaylist(playlistId, videoId);
     }
 
-    @GetMapping("{playlistId}")
+    @GetMapping("{playlistId}/sort")
     public List<PlaylistVideo> sortPlaylistVideos(@PathVariable("playlistId") Long playlistId) {
         return playlistVideoService.sortPlaylistVideos(playlistId);
     }
 
-    @PutMapping("{playlistId}/{videoId}/{orderNum}")
+    @PutMapping("{playlistId}/video/{videoId}/order/{orderNum}")
     public List<PlaylistVideo> changeOrderOfVideosInPlaylist(@PathVariable("playlistId") Long playlistId,
                                                              @PathVariable("videoId") Long videoId,
                                                              @PathVariable("orderNum") Integer newOrderNum) {
