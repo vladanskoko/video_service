@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +19,15 @@ public class User {
 
     @Column
     private String name;
+
+    @Column
+    private String userName;
+
+    @Column
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
