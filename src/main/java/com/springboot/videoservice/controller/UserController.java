@@ -1,7 +1,6 @@
 package com.springboot.videoservice.controller;
 
 import com.springboot.videoservice.model.User;
-import com.springboot.videoservice.service.impl.ChannelServiceImpl;
 import com.springboot.videoservice.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 

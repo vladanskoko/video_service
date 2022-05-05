@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ import java.util.Objects;
 @Table
 @Data
 @NoArgsConstructor
-public class User {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,26 +20,19 @@ public class User {
     @Column
     private String name;
 
-    @Column
-    private String userName;
-
-    @Column
-    private String password;
-
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "role",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     @JsonIgnore
     private List<UserRole> userRoles;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId().equals(user.getId());
+        if (!(o instanceof Role)) return false;
+        Role role = (Role) o;
+        return Objects.equals(getId(), role.getId());
     }
 
     @Override
