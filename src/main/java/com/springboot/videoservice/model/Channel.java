@@ -1,5 +1,6 @@
 package com.springboot.videoservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name="channel")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Channel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

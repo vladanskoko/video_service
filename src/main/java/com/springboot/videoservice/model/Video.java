@@ -13,6 +13,7 @@ import java.util.Set;
 @Table
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
