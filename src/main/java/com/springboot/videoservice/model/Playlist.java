@@ -25,6 +25,7 @@ public class Playlist {
     private String name;
 
     @ManyToMany(mappedBy = "playlists")
+    @JsonIgnore
     private Set<Channel> channels;
 
     @OneToMany(

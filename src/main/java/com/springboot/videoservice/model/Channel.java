@@ -1,5 +1,6 @@
 package com.springboot.videoservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class Channel {
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "playlist_id")
     )
+    @JsonIgnore
     private Set<Playlist> playlists = new HashSet<>();
 
     @Override
